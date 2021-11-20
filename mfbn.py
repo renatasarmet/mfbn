@@ -153,9 +153,7 @@ def main():
                         f.write(' '.join(map(str, v['source'])) + '\n')
 
             if options.save_membership:
-                membership = [0] * (source_graph['vertices']
-                                    [0] + source_graph['vertices'][1])
-                # TODO: SO SALVA 2 CAMADAS, SUBSTITUIR POR UM FOR
+                membership = [0] * sum(source_graph['vertices'])
                 for v in coarsened_graph.vs():
                     for source in v['source']:
                         membership[source] = v.index

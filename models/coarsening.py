@@ -156,16 +156,17 @@ class Coarsening:
             contract = False
 
             args = []
-            for layer in range(graph['layers']):  # TODO: so fazer na layer 0
-
+            layers = graph['layers']  # TODO
+            for layer in range(layers):
                 do_matching = True
                 if self.gmv[layer] is None and level[layer] >= self.max_levels[layer]:
+                    print("Layer = ", layer, ". Max levels reached.")
                     do_matching = False
                 elif self.gmv[layer] and graph['vertices'][layer] <= self.gmv[layer]:
+                    print("Layer = ", layer, ". Minimum vertices reached.")
                     do_matching = False
 
                 if do_matching:
-
                     contract = True
                     level[layer] += 1
 
@@ -224,10 +225,13 @@ class Coarsening:
                 coarsened_graph['level'] = level
 
                 if coarsened_graph.vcount() == graph.vcount():
+                    print("It didn't improve. Vcount = ",
+                          coarsened_graph.vcount())
                     break
 
                 self.hierarchy_graphs.append(coarsened_graph)
                 self.hierarchy_levels.append(level[:])
                 graph = coarsened_graph
             else:
+                print("There is no available matching.")
                 break
