@@ -1,4 +1,4 @@
-from statistics import mode
+from statistics import multimode  # python8
 
 
 def read_file(filename, filetype, last_index_layer_0):
@@ -39,7 +39,7 @@ def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename):
     for current_community, current_last_index in dict_last_index_communities.items():
         # Separating lists
         current_list = list_file_mfbn[last_last_index+1:current_last_index+1]
-        mode_current_list = mode(current_list)
+        mode_current_list = multimode(current_list)[0]
 
         # Getting counts
         n_total = len(current_list)  # true positive + false positive
@@ -74,7 +74,15 @@ def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename):
 if __name__ == "__main__":
 
     # (bnoc_filename, mfbn_filename)
-    list_tuple_files = [('tripartite-1', 'tripartite-1-1')]
+    list_tuple_files = [
+        ('tripartite-1', 'tripartite-1-1'),
+        ('tripartite-4', 'tripartite-4-2'),
+        ('tripartite-5', 'tripartite-5-2'),
+        ('tripartite-5', 'tripartite-5-bi1-1'),
+        ('4partite-1', '4partite-1-2'),
+        ('4partite-2', '4partite-2-2'),
+        ('5partite-1', '5partite-1-2')
+    ]
 
     for files in list_tuple_files:
         calculate_clustering_precision_and_recall(
