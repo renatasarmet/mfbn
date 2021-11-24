@@ -81,7 +81,9 @@ if __name__ == "__main__":
         ('tripartite-5', 'tripartite-5-bi1-1'),
         ('4partite-1', '4partite-1-2'),
         ('4partite-2', '4partite-2-2'),
-        ('5partite-1', '5partite-1-2')
+        ('5partite-1', '5partite-1-2'),
+        ('5partite-2', '5partite-2-2'),
+        ('10partite-1', '10partite-1-1')
     ]
 
     for files in list_tuple_files:
