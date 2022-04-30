@@ -354,3 +354,18 @@ http://www.gnu.org/licenses/.
 ~~~~~
 
 <div class="footer"> &copy; Copyright (C) 2016 Alan Valejo &lt;alanvalejo@gmail.com&gt; All rights reserved.</div>
+
+
+## Renata: How to run
+
+#### ACTIVATE CONDA ENV .. inside redesComplexas folder
+```conda activate pynetviewer```
+
+#### GERENATE NETWORK .. inside bnoc folder
+```python bnoc/bnoc.py -cnf input/tripartite-1.json```
+
+#### VISUALIZE NETWORK .. inside pynetviewer folder
+```python pynetviewer.py -cnf input/tripartite-1.json```
+
+#### RUN ALGORITHM .. inside mfbn folder
+```python mfbn.py -cnf input/tripartite-1.json```

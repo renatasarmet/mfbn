@@ -515,6 +515,11 @@ class MGraph(Graph):
              upper_bound=0.2, n=None, gmv=None, reverse=True):
         """ Matching via weight-constrained label propagation and neighborhood. """
 
+        # Getting the minimum and maximum vertex of this type
+        min_vertex = sorted(vertices)[0]
+        max_vertex = sorted(vertices)[-1]
+        print("min_vertex = ", min_vertex, "max_vertex = ", max_vertex)
+
         matching = numpy.array([-1] * self.vcount())
         matching[vertices] = vertices
 
@@ -526,6 +531,10 @@ class MGraph(Graph):
             min_vertices = 1
 
         max_size = int(math.ceil(((1.0 + upper_bound) * n) / min_vertices))
+        print("n =", n)
+        print("upper_bound =", upper_bound)
+        print("min_vertices =", min_vertices)
+        print("max_size =", max_size)
         number_of_vertices = len(vertices)
         weight_of_sv = self.vs['weight']
         label_dict = dict(zip(vertices, vertices))
@@ -558,7 +567,6 @@ class MGraph(Graph):
                 vertices_id = random.sample(vertices_id, len(vertices_id))
 
             for vertex in vertices_id:
-
                 if self.degree(vertex) == 0:
                     continue
 
@@ -571,17 +579,24 @@ class MGraph(Graph):
                 # Update neighborhood edge density
                 Q = collections.defaultdict(float)
                 for neighbor in twohops_dict[vertex]:
-                    # supervertex weight restriction
-                    if weight_of_sv[label_dict[neighbor]] + self.vs[vertex]['weight'] <= max_size:
-                        if vertex < neighbor:
-                            u, v = vertex, neighbor
-                        else:
-                            u, v = neighbor, vertex
-                        if not similarity_dict.get((u, v), False):
-                            # similarity_dict[(u, v)] = self['similarity'](u, v) / math.sqrt(self.degree(u) + self.degree(v))
-                            similarity_dict[(u, v)] = self['similarity'](u, v)
-                        if similarity_dict[(u, v)] > 0.0:
-                            Q[label_dict[neighbor]] += similarity_dict[(u, v)]
+                    # If neighbor is from the same type
+                    if neighbor >= min_vertex and neighbor <= max_vertex:
+                        # supervertex weight restriction
+                        if weight_of_sv[label_dict[neighbor]] + self.vs[vertex]['weight'] <= max_size:
+                            if vertex < neighbor:
+                                u, v = vertex, neighbor
+                            else:
+                                u, v = neighbor, vertex
+                            if not similarity_dict.get((u, v), False):
+                                # similarity_dict[(u, v)] = self['similarity'](u, v) / math.sqrt(self.degree(u) + self.degree(v))
+                                similarity_dict[(u, v)] = self['similarity'](
+                                    u, v)
+                            if similarity_dict[(u, v)] > 0.0:
+                                Q[label_dict[neighbor]
+                                  ] += similarity_dict[(u, v)]
+                    # else:
+                    #     print("Maximum supervertex size reached (", max_size, "). Vertex (", self.vs[vertex]['weight'], ") =",
+                    #           vertex, "neighbor (", weight_of_sv[label_dict[neighbor]], ")")
 
                 total_similarity = sum(Q.values())
                 for li in Q.keys():
