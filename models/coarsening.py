@@ -156,14 +156,17 @@ class Coarsening:
             contract = False
 
             args = []
-            layers = graph['layers']  # TODO
+            # TODO: Should we have the option to just do it in 1 layer?
+            layers = graph['layers']
             for layer in range(layers):
                 do_matching = True
                 if self.gmv[layer] is None and level[layer] >= self.max_levels[layer]:
-                    print("Layer = ", layer, ". Max levels reached.")
+                    print(
+                        "Layer = {layer}. Max levels reached with {level[layer]} levels.")
                     do_matching = False
                 elif self.gmv[layer] and graph['vertices'][layer] <= self.gmv[layer]:
-                    print("Layer = ", layer, ". Minimum vertices reached.")
+                    print(
+                        f"Layer = {layer}. Minimum vertices reached with {graph['vertices'][layer]} vertices.")
                     do_matching = False
 
                 if do_matching:
@@ -225,8 +228,8 @@ class Coarsening:
                 coarsened_graph['level'] = level
 
                 if coarsened_graph.vcount() == graph.vcount():
-                    print("It didn't improve. Vcount = ",
-                          coarsened_graph.vcount())
+                    print(
+                        f"It didn't improve. Vcount = {coarsened_graph.vcount()}. matching[vertices] = {matching[vertices]}")
                     break
 
                 self.hierarchy_graphs.append(coarsened_graph)
