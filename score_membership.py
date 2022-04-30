@@ -17,6 +17,14 @@ def read_ncol_file(filename, filetype, last_index_layer_0):
 
 
 def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename, last_index_layer_0):
+    """
+    * Metrics details
+    Precision = true positive / (true positive + false positive)
+    --> n_correct / n_total
+    Recall = true positive / (true positive + false negative)
+    --> n_correct / n_classified_mode
+    *
+    """
     print(f"CALCULATING METRICS, filename: {mfbn_filename}")
 
     # Reading membership files
@@ -55,12 +63,6 @@ def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename, last
             mode_current_list)  # true positive + false negative
 
         # Calculating metrics
-        # * Metrics details
-        # Precision = true positive / (true positive + false positive)
-        # --> n_correct / n_total
-        # Recall = true positive / (true positive + false negative)
-        # --> n_correct / n_classified_mode
-        # *
         sum_n_correct += n_correct
         sum_precision += n_correct/n_total
         sum_recall += n_correct/n_classified_mode
@@ -79,6 +81,12 @@ def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename, last
 
 
 def calculate_clustering_modularity(ncol_filename, membership_filepath, membership_filename, last_index_layer_0):
+    """
+    https://arxiv.org/pdf/cond-mat/0408187.pdf
+    Modularity is a property of a network and a specific proposed division of that network 
+    into communities. It measures when the division is a good one, in the sense that there 
+    are many edges within communities and only a few between them. 
+    """
     print(
         f"CALCULATING METRICS, filename: {membership_filepath}{membership_filename}")
 
@@ -107,16 +115,20 @@ def calculate_clustering_modularity(ncol_filename, membership_filepath, membersh
     # Creating and filling adjacency list
     A = [[0 for x in range(last_index_layer_0)]
          for y in range(last_index_layer_0)]
-    for key in dict_edges:
+    for key in dict_edges:  # key is from any type but column 0
         for i in range(len(dict_edges[key])):
-            u = dict_edges[key][i]
+            u = dict_edges[key][i]  # u is from column 0 (vertex, weight)
+            # looking for the common neighbors of u[0]
             for j in range(i+1, len(dict_edges[key])):
-                v = dict_edges[key][j]
+                v = dict_edges[key][j]  # j is from column 0 (vertex, weight)
                 if A[u[0]][v[0]] == 0:
                     A[u[0]][v[0]] = 1  # += u[1] + v[1]
                     A[v[0]][u[0]] = 1  # += u[1] + v[1]
                     deg[u[0]] = deg.get(u[0], 0) + 1
                     deg[v[0]] = deg.get(v[0], 0) + 1
+
+    # Links are connections between vertex of column 0
+    # A link exists if two vertex from column 0 have the same neighbor from another type
 
     # Counting links
     m = (sum([sum(x) for x in A])) / 2
@@ -126,7 +138,8 @@ def calculate_clustering_modularity(ncol_filename, membership_filepath, membersh
     for i in range(last_index_layer_0):
         for j in range(last_index_layer_0):
             if i != j:
-                expected = (deg.get(i, 0) * deg.get(j, 0)) / (2*m)
+                expected = (deg.get(i, 0) * deg.get(j, 0)) / \
+                    (2*m)  # from 0 to 1
                 diff = A[i][j] - expected
                 same_community = int(list_file_mfbn[i] == list_file_mfbn[j])
                 modularity += diff * same_community
