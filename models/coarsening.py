@@ -50,7 +50,7 @@ class Coarsening:
         prop_defaults = {
             'reduction_factor': [0.5], 'max_levels': [3], 'matching': ['rgmb'],
             'similarity': ['common_neighbors'], 'itr': [10], 'upper_bound': [0.2], 'seed_priority': ['degree'],
-            'gmv': [None], 'max_hops': 2, 'tolerance': [0.01], 'reverse': None, 'projection': 'common_neighbors',
+            'gmv': [None], 'max_hops': 2, 'layers_to_coarse': [], 'tolerance': [0.01], 'reverse': None, 'projection': 'common_neighbors',
             'pgrd': [0.50], 'deltap': [0.35], 'deltav': [0.35], 'wmin': [0.0], 'wmax': [1.0], 'threads': 1
         }
 
@@ -63,13 +63,13 @@ class Coarsening:
 
         # Validation of list values
         for prop_name, prop_value in prop_defaults.items():
-            if prop_name not in ['threads', 'max_hops'] and len(getattr(self, prop_name)) == 1:
+            if prop_name not in ['threads', 'max_hops', 'layers_to_coarse'] and len(getattr(self, prop_name)) == 1:
                 setattr(self, prop_name, [getattr(self, prop_name)[
                         0]] * self.source_graph['layers'])
 
         # Parameters dimension validation
         for prop_name, prop_value in prop_defaults.items():
-            if prop_name not in ['threads', 'projection', 'max_hops']:
+            if prop_name not in ['threads', 'projection', 'max_hops', 'layers_to_coarse']:
                 if self.source_graph['layers'] != len(getattr(self, prop_name)):
                     print('Number of layers and ' +
                           str(prop_name) + ' do not match.')
@@ -183,11 +183,10 @@ class Coarsening:
         while True:
             level = graph['level']
             contract = False
-
             args = []
-            # TODO: Should we have the option to just do it in 1 layer?
-            layers = graph['layers']
-            for layer in range(layers):
+            layers = self.layers_to_coarse if self.layers_to_coarse else range(
+                graph['layers'])
+            for layer in layers:
                 do_matching = True
                 if self.gmv[layer] is None and level[layer] >= self.max_levels[layer]:
                     print(

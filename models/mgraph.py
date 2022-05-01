@@ -609,10 +609,9 @@ class MGraph(Graph):
                             similarity_dict[(u, v)] = self['similarity'](u, v)
                         if similarity_dict[(u, v)] > 0.0:
                             Q[label_dict[neighbor]] += similarity_dict[(u, v)]
-                    # TODO: why are we checking with the same label_dict?
                     else:
                         print(
-                            f"Maximum supervertex size reached ({max_size}). Vertex ({vertex}) weight = ({self.vs[vertex]['weight']}). label_dict[neighbor {neighbor}] ({label_dict[neighbor]}) weight = ({weight_of_sv[label_dict[neighbor]]})")
+                            f"Maximum supervertex size reached ({max_size}). Vertex ({vertex}) weight = ({self.vs[vertex]['weight']}). label_dict[vertex {vertex}] ({label_dict[vertex]}). label_dict[neighbor {neighbor}] ({label_dict[neighbor]}) weight = ({weight_of_sv[label_dict[neighbor]]})")
 
                 total_similarity = sum(Q.values())
                 # `li` similarity subtracted by the similarity of others
@@ -641,9 +640,9 @@ class MGraph(Graph):
                             print(
                                 f"Minimum number of vertices reached with {number_of_vertices} vertices.")
                             break
-        print("tolerance =", tolerance)
-        print("swap =", swap)
-        print("itr=", itr)
+        if swap == 0:
+            print(
+                "Swap == 0. Dominant label are already stabilized, no changes detected.")
         for key, value in label_dict.items():
             matching[key] = value
 

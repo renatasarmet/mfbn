@@ -116,8 +116,8 @@ def main():
             reduction_factor=options.reduction_factor, max_levels=options.max_levels,
             matching=options.matching, similarity=options.similarity, itr=options.itr,
             upper_bound=options.upper_bound, gmv=options.gmv, max_hops=options.max_hops,
-            tolerance=options.tolerance, reverse=options.reverse, seed_priority=options.seed_priority,
-            threads=options.threads
+            layers_to_coarse=options.layers_to_coarse, tolerance=options.tolerance,
+            reverse=options.reverse, seed_priority=options.seed_priority, threads=options.threads
         )
 
         coarsening = Coarsening(source_graph, **kwargs)
@@ -133,7 +133,7 @@ def main():
 
             if options.save_conf or options.show_conf:
                 d = {
-                    'source_input': options.input, 'source_vertices': source_graph['vertices'], 'source_vcount': source_graph.vcount(), 'source_ecount': source_graph.ecount(), 'coarsened_ecount': coarsened_graph.ecount(), 'coarsened_vcount': coarsened_graph.vcount(), 'coarsened_vertices': coarsened_graph['vertices'], 'achieved_levels': coarsened_graph['level'], 'reduction_factor': options.reduction_factor, 'max_levels': options.max_levels, 'similarity': options.similarity, 'matching': options.matching, 'upper_bound': options.upper_bound, 'gmv': options.gmv, 'max_hops': options.max_hops, 'itr': options.itr, 'level': level
+                    'source_input': options.input, 'source_vertices': source_graph['vertices'], 'source_vcount': source_graph.vcount(), 'source_ecount': source_graph.ecount(), 'coarsened_ecount': coarsened_graph.ecount(), 'coarsened_vcount': coarsened_graph.vcount(), 'coarsened_vertices': coarsened_graph['vertices'], 'achieved_levels': coarsened_graph['level'], 'reduction_factor': options.reduction_factor, 'max_levels': options.max_levels, 'similarity': options.similarity, 'matching': options.matching, 'upper_bound': options.upper_bound, 'gmv': options.gmv, 'max_hops': options.max_hops, 'layers_to_coarse': options.layers_to_coarse, 'itr': options.itr, 'level': level
                 }
 
             if options.save_conf:
