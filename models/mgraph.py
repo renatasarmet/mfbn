@@ -561,8 +561,8 @@ class MGraph(Graph):
             vertices_id = sorted(
                 dictionary, key=dictionary.__getitem__, reverse=reverse)
 
-        print("vertices_score=", vertices_score)
-        print("dictionary=", dictionary)
+        # print("vertices_score=", vertices_score)
+        # print("dictionary=", dictionary)
         print("vertices_id=", vertices_id)
 
         tolerance *= len(vertices)
@@ -575,7 +575,7 @@ class MGraph(Graph):
         hop = 2
 
         while (tolerance < swap) and itr:
-            print(itr)
+            print("----> itr =", itr)
             swap = 0
             itr -= 1
 
@@ -606,24 +606,21 @@ class MGraph(Graph):
                 for neighbor in hops_dict[vertex]:
                     # supervertex weight restriction
                     if weight_of_sv[label_dict[neighbor]] + self.vs[vertex]['weight'] <= max_size:
-                        if vertex < neighbor:
-                            u, v = vertex, neighbor
-                        else:
-                            u, v = neighbor, vertex
+                        u = min(vertex, neighbor)
+                        v = max(vertex, neighbor)
                         if not similarity_dict.get((u, v), False):
-                            # similarity_dict[(u, v)] = self['similarity'](u, v) / math.sqrt(self.degree(u) + self.degree(v))
-                            similarity_dict[(u, v)] = self['similarity'](
-                                u, v)
+                            similarity_dict[(u, v)] = self['similarity'](u, v)
                         if similarity_dict[(u, v)] > 0.0:
-                            Q[label_dict[neighbor]
-                              ] += similarity_dict[(u, v)]
-                    # else:
-                    #     print("Maximum supervertex size reached (", max_size, "). Vertex (", self.vs[vertex]['weight'], ") =",
-                    #           vertex, "neighbor (", weight_of_sv[label_dict[neighbor]], ")")
+                            Q[label_dict[neighbor]] += similarity_dict[(u, v)]
+                    # TODO: why are we checking with the same label_dict?
+                    else:
+                        print(
+                            f"Maximum supervertex size reached ({max_size}). Vertex ({vertex}) weight = ({self.vs[vertex]['weight']}). label_dict[neighbor {neighbor}] ({label_dict[neighbor]}) weight = ({weight_of_sv[label_dict[neighbor]]})")
 
                 total_similarity = sum(Q.values())
+                # `li` similarity subtracted by the similarity of others
                 for li in Q.keys():
-                    Q[li] -= (total_similarity - Q[li])
+                    Q[li] = Q[li] - (total_similarity - Q[li])
 
                 if Q:
                     # Select the dominant label

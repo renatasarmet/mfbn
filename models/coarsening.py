@@ -151,7 +151,7 @@ class Coarsening:
 
         graph = self.source_graph.copy()
         while True:
-
+            print("\n\n")
             level = graph['level']
             contract = False
 
