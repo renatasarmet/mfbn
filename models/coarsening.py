@@ -114,7 +114,7 @@ class Coarsening:
 
         # Similarity measure validation
         valid_similarity = [
-            'common_neighbors', 'weighted_common_neighbors',
+            'common_neighbors', 'weighted_common_neighbors', 'hops_common_neighbors',
             'salton', 'preferential_attachment', 'jaccard', 'weighted_jaccard',
             'adamic_adar', 'resource_allocation', 'sorensen', 'hub_promoted',
             'hub_depressed', 'leicht_holme_newman', 'newman_collaboration', 'unweight'

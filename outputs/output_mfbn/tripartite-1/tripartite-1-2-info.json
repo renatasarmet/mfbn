@@ -15,7 +15,7 @@
         15
     ],
     "achieved_levels": [
-        3,
+        4,
         0,
         0
     ],
@@ -30,9 +30,9 @@
         3
     ],
     "similarity": [
-        "weighted_common_neighbors",
-        "weighted_common_neighbors",
-        "weighted_common_neighbors"
+        "hops_common_neighbors",
+        "hops_common_neighbors",
+        "hops_common_neighbors"
     ],
     "matching": [
         "mlpb",
@@ -40,9 +40,9 @@
         "mlpb"
     ],
     "upper_bound": [
-        0.2,
-        0.2,
-        0.2
+        1.0,
+        1.0,
+        1.0
     ],
     "gmv": [
         4,

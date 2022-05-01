@@ -8,9 +8,9 @@
     "source_vcount": 45,
     "source_ecount": 52,
     "coarsened_ecount": 28,
-    "coarsened_vcount": 31,
+    "coarsened_vcount": 30,
     "coarsened_vertices": [
-        6,
+        5,
         10,
         15
     ],
@@ -59,7 +59,7 @@
         1000
     ],
     "level": [
-        1,
+        3,
         0,
         0
     ]

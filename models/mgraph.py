@@ -583,6 +583,7 @@ class MGraph(Graph):
                 vertices_id = vertices
                 vertices_id = random.sample(vertices_id, len(vertices_id))
 
+            has_path = False
             for vertex in vertices_id:
                 if self.degree(vertex) == 0:
                     print(
@@ -601,12 +602,14 @@ class MGraph(Graph):
                 # Update neighborhood edge density
                 Q = collections.defaultdict(float)
                 for neighbor in hops_dict[vertex]:
+                    has_path = True
                     # supervertex weight restriction
                     if weight_of_sv[label_dict[neighbor]] + self.vs[vertex]['weight'] <= max_size:
                         u = min(vertex, neighbor)
                         v = max(vertex, neighbor)
                         if not similarity_dict.get((u, v), False):
-                            similarity_dict[(u, v)] = self['similarity'](u, v)
+                            similarity_dict[(u, v)] = self['similarity'](
+                                self, hop, u, v)
                         if similarity_dict[(u, v)] > 0.0:
                             Q[label_dict[neighbor]] += similarity_dict[(u, v)]
                     else:
@@ -640,7 +643,10 @@ class MGraph(Graph):
                             print(
                                 f"Minimum number of vertices reached with {number_of_vertices} vertices.")
                             break
-        if swap == 0:
+        if not has_path:
+            print(
+                f"No paths of {hop}-hops found anymore (hops_dict is null for all vertices).")
+        elif swap == 0:
             print(
                 "Swap == 0. Dominant label are already stabilized, no changes detected.")
         for key, value in label_dict.items():
