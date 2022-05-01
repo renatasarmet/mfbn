@@ -638,8 +638,12 @@ class MGraph(Graph):
                             number_of_vertices -= 1
                         if number_of_vertices <= min_vertices:
                             tolerance = swap
+                            print(
+                                f"Minimum number of vertices reached with {number_of_vertices} vertices.")
                             break
-
+        print("tolerance =", tolerance)
+        print("swap =", swap)
+        print("itr=", itr)
         for key, value in label_dict.items():
             matching[key] = value
 

@@ -147,6 +147,32 @@ class Coarsening:
                     text += str(layer) + ') does not accept -rf > 0.5.'
                     print(text)
 
+        # Debug edges
+        # How many edges in total?
+        print(f"Total number of edges: {self.source_graph.ecount()}")
+
+        for layer in range(self.source_graph['layers']):
+            vertices_id = self.source_graph['vertices_by_type'][layer]
+
+            # How many vertices with no edges?
+            degree0 = [
+                vertex for vertex in vertices_id if self.source_graph.degree(vertex) == 0]
+            print(
+                F"Layer {layer}: {len(degree0)} vertices with no edges {degree0}")
+
+            min_l1 = vertices_id[0]
+            max_l1 = vertices_id[-1]
+
+            # How many edges per pair of layers?
+            for l2 in range(layer+1, self.source_graph['layers']):
+                vertices_id_l2 = self.source_graph['vertices_by_type'][l2]
+                min_l2 = vertices_id_l2[0]
+                max_l2 = vertices_id_l2[-1]
+                sum_edges = sum([sum(x[min_l2:max_l2+1])
+                                 for x in self.source_graph.get_adjacency()[min_l1:max_l1+1]])
+                print(f"Sum edges layers {layer} and {l2} = ", sum_edges)
+        print("--------------------------------------------------")
+
     def run(self):
 
         graph = self.source_graph.copy()
