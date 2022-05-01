@@ -150,8 +150,11 @@ class Coarsening:
     def run(self):
 
         graph = self.source_graph.copy()
+
+        # Starting neighborhood with two hops
+        hop = 2
+        print(f"------------------------------ hop = {hop}")
         while True:
-            print("\n\n")
             level = graph['level']
             contract = False
 
@@ -187,6 +190,7 @@ class Coarsening:
                         kwargs['n'] = self.source_graph['vertices'][layer]
                         kwargs['tolerance'] = self.tolerance[layer]
                         kwargs['itr'] = self.itr[layer]
+                        kwargs['hop'] = hop
 
                     if self.matching[layer] in ['hem', 'lem', 'rm', 'mnmf', 'msvm']:
                         graph['projection'] = getattr(Similarity(
@@ -229,8 +233,11 @@ class Coarsening:
 
                 if coarsened_graph.vcount() == graph.vcount():
                     print(
-                        f"It didn't improve. Vcount = {coarsened_graph.vcount()}. matching[vertices] = {matching[vertices]}")
-                    break
+                        f"It didn't improve. Vcount = {coarsened_graph.vcount()}. matching[vertices] = {matching[vertices]}\n")
+                    if hop >= 3:  # TODO: Maybe define maximum hop according to layers
+                        break
+                    hop += 1  # try with one more hop
+                    print(f"\n\n------------------------------ hop = {hop}\n")
 
                 self.hierarchy_graphs.append(coarsened_graph)
                 self.hierarchy_levels.append(level[:])
@@ -238,3 +245,4 @@ class Coarsening:
             else:
                 print("There is no available matching.")
                 break
+            print("\n")
