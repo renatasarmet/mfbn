@@ -50,7 +50,7 @@ class Coarsening:
         prop_defaults = {
             'reduction_factor': [0.5], 'max_levels': [3], 'matching': ['rgmb'],
             'similarity': ['common_neighbors'], 'itr': [10], 'upper_bound': [0.2], 'seed_priority': ['degree'],
-            'gmv': [None], 'tolerance': [0.01], 'reverse': None, 'projection': 'common_neighbors',
+            'gmv': [None], 'max_hops': 2, 'tolerance': [0.01], 'reverse': None, 'projection': 'common_neighbors',
             'pgrd': [0.50], 'deltap': [0.35], 'deltav': [0.35], 'wmin': [0.0], 'wmax': [1.0], 'threads': 1
         }
 
@@ -63,13 +63,13 @@ class Coarsening:
 
         # Validation of list values
         for prop_name, prop_value in prop_defaults.items():
-            if prop_name != 'threads' and len(getattr(self, prop_name)) == 1:
+            if prop_name not in ['threads', 'max_hops'] and len(getattr(self, prop_name)) == 1:
                 setattr(self, prop_name, [getattr(self, prop_name)[
                         0]] * self.source_graph['layers'])
 
         # Parameters dimension validation
         for prop_name, prop_value in prop_defaults.items():
-            if prop_name not in ['threads', 'projection']:
+            if prop_name not in ['threads', 'projection', 'max_hops']:
                 if self.source_graph['layers'] != len(getattr(self, prop_name)):
                     print('Number of layers and ' +
                           str(prop_name) + ' do not match.')
@@ -234,7 +234,7 @@ class Coarsening:
                 if coarsened_graph.vcount() == graph.vcount():
                     print(
                         f"It didn't improve. Vcount = {coarsened_graph.vcount()}. matching[vertices] = {matching[vertices]}\n")
-                    if hop >= 3:  # TODO: Maybe define maximum hop according to layers
+                    if hop >= self.max_hops:
                         break
                     hop += 1  # try with one more hop
                     print(f"\n\n------------------------------ hop = {hop}\n")
