@@ -106,7 +106,7 @@ class Similarity(object):
     def hops_common_neighbors(self, graph, hop, i, j):
         """ 
         Calculates pairwise common neighbors similarity on a given unweighted graph, 
-        uses the entire X-hop path information. 
+        uses the entire k-hop path information. 
         If it's a 2-hops, return the weighted_common_neighbors.
         """
 
