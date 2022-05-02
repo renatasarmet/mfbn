@@ -612,9 +612,9 @@ class MGraph(Graph):
                                 self, hop, u, v)
                         if similarity_dict[(u, v)] > 0.0:
                             Q[label_dict[neighbor]] += similarity_dict[(u, v)]
-                    else:
-                        print(
-                            f"Maximum supervertex size reached ({max_size}). Vertex ({vertex}) weight = ({self.vs[vertex]['weight']}). label_dict[vertex {vertex}] ({label_dict[vertex]}). label_dict[neighbor {neighbor}] ({label_dict[neighbor]}) weight = ({weight_of_sv[label_dict[neighbor]]})")
+                    # else:
+                    #     print(
+                    #         f"Maximum supervertex size reached ({max_size}). Vertex ({vertex}) weight = ({self.vs[vertex]['weight']}). label_dict[vertex {vertex}] ({label_dict[vertex]}). label_dict[neighbor {neighbor}] ({label_dict[neighbor]}) weight = ({weight_of_sv[label_dict[neighbor]]})")
 
                 total_similarity = sum(Q.values())
                 # `li` similarity subtracted by the similarity of others

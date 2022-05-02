@@ -99,11 +99,11 @@ def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename,
 
     # Average precision of each community
     avg_precison = sum_precision/count_communities
-    print(f"Average precision {avg_precison*100:.2f}%")
+    print(f"Average precision {avg_precison*100:.3f}%")
 
     # Average recall of each community
     avg_recall = sum_recall/count_communities
-    print(f"Average recall {avg_recall*100:.2f}% \n")
+    print(f"Average recall {avg_recall*100:.3f}% \n")
 
 
 def calculate_clustering_modularity(ncol_filename, membership_filepath, membership_filename, last_index_layer_0):
@@ -171,22 +171,16 @@ def calculate_clustering_modularity(ncol_filename, membership_filepath, membersh
                 modularity += diff * same_community
     modularity /= (2*m)
 
-    print(f"Modularity {modularity:.2f} \n")
+    print(f"Modularity {modularity:.3f} \n")
 
 
 if __name__ == "__main__":
 
     # (bnoc_filename, mfbn_filename)
     list_tuple_files = [
-        ('tripartite-1', 'tripartite-1-1', 20),
-        # ('tripartite-4', 'tripartite-4-2', 200),
-        # ('tripartite-5', 'tripartite-5-2', 200),
-        # ('tripartite-5', 'tripartite-5-bi1-1', 200),
-        # ('4partite-1', '4partite-1-2', 200),
-        # ('4partite-2', '4partite-2-2', 2000),
-        # ('5partite-1', '5partite-1-2', 200),
-        # ('5partite-2', '5partite-2-2', 10000),
-        # ('10partite-1', '10partite-1-1', 5000)
+        # ('tripartite-1', 'tripartite-1-1', 20),
+        ('tripartite-2', 'tripartite-2-2', 200),
+        ('tripartite-2', 'tripartite-2-3', 200)
     ]
 
     for files in list_tuple_files:
