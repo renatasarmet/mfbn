@@ -16,7 +16,8 @@ def read_ncol_file(filename, filetype, last_index_layer_0):
         return list_edges
 
 
-def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename, last_index_layer_0):
+def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename,
+                                              last_index_layer_0, remove_vertex_degree_0=False):
     """
     * Metrics details
     Precision = true positive / (true positive + false positive)
@@ -34,6 +35,31 @@ def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename, last
     list_file_mfbn = read_file(filename=f'outputs/output_mfbn/{bnoc_filename}/{mfbn_filename}',
                                filetype='membership',
                                last_index_layer_0=last_index_layer_0)
+
+    if remove_vertex_degree_0:
+        # Reading ncol file
+        list_file_ncol = read_ncol_file(filename=f'outputs/output_bnoc/{bnoc_filename}/{bnoc_filename}',
+                                        filetype='ncol',
+                                        last_index_layer_0=last_index_layer_0)
+
+        # Get vertices with no connections (degree=0)
+        # Start the set with all vertices in column 0
+        # When we find an edge from some vertex, we take it off the set
+        set_vertex_with_no_edges = set(range(last_index_layer_0))
+        for edge in list_file_ncol:
+            e = edge.split()
+            if len(e) > 0:
+                set_vertex_with_no_edges.discard(int(e[0]))
+                set_vertex_with_no_edges.discard(int(e[1]))
+
+        print(f"Removing {len(set_vertex_with_no_edges)} vertices with no connections (degree=0):",
+              set_vertex_with_no_edges)
+
+        # Cleaning list_file_bnoc and list_file_mfbn: removing set_vertex_with_no_edges
+        list_file_bnoc = [v for i, v in enumerate(
+            list_file_bnoc) if i not in set_vertex_with_no_edges]
+        list_file_mfbn = [v for i, v in enumerate(
+            list_file_mfbn) if i not in set_vertex_with_no_edges]
 
     # Storing the last index in a given community
     dict_last_index_communities = {}
@@ -167,7 +193,8 @@ if __name__ == "__main__":
         calculate_clustering_precision_and_recall(
             bnoc_filename=files[0],
             mfbn_filename=files[1],
-            last_index_layer_0=files[2])
+            last_index_layer_0=files[2],
+            remove_vertex_degree_0=True)
 
         print("Original:")
         calculate_clustering_modularity(
