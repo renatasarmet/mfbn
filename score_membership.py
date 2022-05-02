@@ -28,10 +28,10 @@ def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename, last
     print(f"CALCULATING METRICS, filename: {mfbn_filename}")
 
     # Reading membership files
-    list_file_bnoc = read_file(filename=f'../output_bnoc/{bnoc_filename}',
+    list_file_bnoc = read_file(filename=f'outputs/output_bnoc/{bnoc_filename}/{bnoc_filename}',
                                filetype='membership',
                                last_index_layer_0=last_index_layer_0)
-    list_file_mfbn = read_file(filename=f'../output_mfbn/{mfbn_filename}',
+    list_file_mfbn = read_file(filename=f'outputs/output_mfbn/{bnoc_filename}/{mfbn_filename}',
                                filetype='membership',
                                last_index_layer_0=last_index_layer_0)
 
@@ -91,11 +91,11 @@ def calculate_clustering_modularity(ncol_filename, membership_filepath, membersh
         f"CALCULATING METRICS, filename: {membership_filepath}{membership_filename}")
 
     # Reading membership files
-    list_file_mfbn = read_file(filename=f'../{membership_filepath}{membership_filename}',
+    list_file_mfbn = read_file(filename=f'outputs/{membership_filepath}/{ncol_filename}/{membership_filename}',
                                filetype='membership',
                                last_index_layer_0=last_index_layer_0)
 
-    list_file_ncol = read_ncol_file(filename=f'../output_bnoc/{ncol_filename}',
+    list_file_ncol = read_ncol_file(filename=f'outputs/output_bnoc/{ncol_filename}/{ncol_filename}',
                                     filetype='ncol',
                                     last_index_layer_0=last_index_layer_0)
 
@@ -152,15 +152,15 @@ if __name__ == "__main__":
 
     # (bnoc_filename, mfbn_filename)
     list_tuple_files = [
-        ('tripartite-1', 'tripartite-1-1', 200),
-        ('tripartite-4', 'tripartite-4-2', 200),
-        ('tripartite-5', 'tripartite-5-2', 200),
-        ('tripartite-5', 'tripartite-5-bi1-1', 200),
-        ('4partite-1', '4partite-1-2', 200),
-        ('4partite-2', '4partite-2-2', 2000),
-        ('5partite-1', '5partite-1-2', 200),
-        ('5partite-2', '5partite-2-2', 10000),
-        ('10partite-1', '10partite-1-1', 5000)
+        ('tripartite-1', 'tripartite-1-1', 20),
+        # ('tripartite-4', 'tripartite-4-2', 200),
+        # ('tripartite-5', 'tripartite-5-2', 200),
+        # ('tripartite-5', 'tripartite-5-bi1-1', 200),
+        # ('4partite-1', '4partite-1-2', 200),
+        # ('4partite-2', '4partite-2-2', 2000),
+        # ('5partite-1', '5partite-1-2', 200),
+        # ('5partite-2', '5partite-2-2', 10000),
+        # ('10partite-1', '10partite-1-1', 5000)
     ]
 
     for files in list_tuple_files:
