@@ -80,7 +80,9 @@ def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename,
     for current_community, current_last_index in dict_last_index_communities.items():
         # Separating lists
         current_list = list_file_mfbn[last_last_index+1:current_last_index+1]
+        # print("current_list=", current_list)
         mode_current_list = multimode(current_list)[0]
+        # print("mode_current_list=", mode_current_list)
 
         # Getting counts
         n_total = len(current_list)  # true positive + false positive
@@ -89,8 +91,12 @@ def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename,
             mode_current_list)  # true positive + false negative
 
         # Calculating metrics
+        # print(f"community {current_community} n_correct=", n_correct)
+        # print("n_total = ", n_total)
         sum_n_correct += n_correct
         sum_precision += n_correct/n_total
+        # print("sum_precision=", sum_precision)
+        # print("n_correct=", n_correct)
         sum_recall += n_correct/n_classified_mode
         count_communities += 1
 
@@ -179,11 +185,22 @@ if __name__ == "__main__":
     # (bnoc_filename, mfbn_filename)
     list_tuple_files = [
         # ('tripartite-1', 'tripartite-1-1', 20),
-        ('tripartite-2', 'tripartite-2-2', 200),
-        ('tripartite-2', 'tripartite-2-3', 200)
+        # ('tripartite-2', 'tripartite-2-2', 200),
+        # ('tripartite-2', 'tripartite-2-3', 200),
+        ('tripartite-2', 'tripartite-2-bi-1-2', 200),
+        ('tripartite-2', 'tripartite-2-bi-2-2', 200)
+        # ('tripartite-3', 'tripartite-3-2', 200)
     ]
 
     for files in list_tuple_files:
+        print("remove_vertex_degree_0=False")
+        calculate_clustering_precision_and_recall(
+            bnoc_filename=files[0],
+            mfbn_filename=files[1],
+            last_index_layer_0=files[2],
+            remove_vertex_degree_0=False)
+
+        print("remove_vertex_degree_0=True")
         calculate_clustering_precision_and_recall(
             bnoc_filename=files[0],
             mfbn_filename=files[1],

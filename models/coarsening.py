@@ -83,6 +83,14 @@ class Coarsening:
             self.threads = mp.cpu_count()
             sys.exit(1)
 
+        if self.max_hops > self.source_graph['layers']:
+            print('Warning: Number of defined max_hops (' + str(self.max_hops) + ') '
+                  'cannot be greater than the number of layers (' + str(
+                      self.source_graph['layers']) + ').\n The number of '
+                  'max_hops was setted as ' + str(self.max_hops))
+            self.max_hops = self.source_graph['layers']
+            sys.exit(1)
+
         # Matching method validation
         valid_matching = ['rgmb', 'gmb', 'mlpb',
                           'hem', 'lem', 'rm', 'mnmf', 'msvm']
