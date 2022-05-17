@@ -112,7 +112,7 @@ def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename,
     print(f"Average recall {avg_recall*100:.3f}% \n")
 
 
-def calculate_clustering_modularity(ncol_filename, membership_filepath, membership_filename, last_index_layer_0):
+def calculate_clustering_modularity(ncol_folder, ncol_filename, membership_filepath, membership_filename, last_index_layer_0):
     """
     https://arxiv.org/pdf/cond-mat/0408187.pdf
     Modularity is a property of a network and a specific proposed division of that network 
@@ -123,11 +123,11 @@ def calculate_clustering_modularity(ncol_filename, membership_filepath, membersh
         f"CALCULATING METRICS, filename: {membership_filepath}{membership_filename}")
 
     # Reading membership files
-    list_file_mfbn = read_file(filename=f'outputs/{membership_filepath}/{ncol_filename}/{membership_filename}',
+    list_file_mfbn = read_file(filename=f'outputs/{membership_filepath}/{ncol_folder}/{membership_filename}',
                                filetype='membership',
                                last_index_layer_0=last_index_layer_0)
 
-    list_file_ncol = read_ncol_file(filename=f'outputs/output_bnoc/{ncol_filename}/{ncol_filename}',
+    list_file_ncol = read_ncol_file(filename=f'outputs/output_bnoc/{ncol_folder}/{ncol_filename}',
                                     filetype='ncol',
                                     last_index_layer_0=last_index_layer_0)
 
@@ -182,43 +182,45 @@ def calculate_clustering_modularity(ncol_filename, membership_filepath, membersh
 
 if __name__ == "__main__":
 
-    # (bnoc_filename, mfbn_filename)
+    # (folder, bnoc_filename, mfbn_filename, size layer 0)
     list_tuple_files = [
-        # ('tripartite-1', 'tripartite-1-1', 20),
-        # ('tripartite-2', 'tripartite-2-2', 200),
-        # ('tripartite-2', 'tripartite-2-3', 200),
-        ('tripartite-2', 'tripartite-2-bi-1-1', 200),
-        # ('tripartite-2', 'tripartite-2-bi-2-1', 200)
-        # ('tripartite-3', 'tripartite-3-2', 200)
+        # ('tripartite-1', 'tripartite-1', 'tripartite-1-1', 20),
+        # ('tripartite-2', 'tripartite-2', 'tripartite-2-2', 200),
+        # ('tripartite-2', 'tripartite-2', 'tripartite-2-3', 200),
+        # ('tripartite-2', 'tripartite-2-bi-1', 'tripartite-2-bi-1-1', 200),
+        # ('tripartite-2', 'tripartite-2-bi-2', 'tripartite-2-bi-2-1', 200)
+        ('tripartite-3', 'tripartite-3', 'tripartite-3-2', 200)
     ]
 
     for files in list_tuple_files:
         print("remove_vertex_degree_0=False")
         calculate_clustering_precision_and_recall(
             bnoc_filename=files[0],
-            mfbn_filename=files[1],
-            last_index_layer_0=files[2],
+            mfbn_filename=files[2],
+            last_index_layer_0=files[3],
             remove_vertex_degree_0=False)
 
         print("remove_vertex_degree_0=True")
         calculate_clustering_precision_and_recall(
             bnoc_filename=files[0],
-            mfbn_filename=files[1],
-            last_index_layer_0=files[2],
+            mfbn_filename=files[2],
+            last_index_layer_0=files[3],
             remove_vertex_degree_0=True)
 
         print("Original:")
         calculate_clustering_modularity(
-            ncol_filename=files[0],
+            ncol_folder=files[0],
+            ncol_filename=files[1],
             membership_filepath='output_bnoc/',
             membership_filename=files[0],
-            last_index_layer_0=files[2])
+            last_index_layer_0=files[3])
 
         print("Detected:")
         calculate_clustering_modularity(
-            ncol_filename=files[0],
+            ncol_folder=files[0],
+            ncol_filename=files[1],
             membership_filepath='output_mfbn/',
-            membership_filename=files[1],
-            last_index_layer_0=files[2])
+            membership_filename=files[2],
+            last_index_layer_0=files[3])
 
         print("--------")
