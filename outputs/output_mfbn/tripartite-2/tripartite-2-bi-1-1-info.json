@@ -1,0 +1,55 @@
+{
+    "source_input": "outputs/output_bnoc/tripartite-2/tripartite-2-bi-1.ncol",
+    "source_vertices": [
+        200,
+        10
+    ],
+    "source_vcount": 210,
+    "source_ecount": 192,
+    "coarsened_ecount": 71,
+    "coarsened_vcount": 114,
+    "coarsened_vertices": [
+        104,
+        10
+    ],
+    "achieved_levels": [
+        2,
+        0
+    ],
+    "reduction_factor": [
+        1.0,
+        1.0
+    ],
+    "max_levels": [
+        1000,
+        3
+    ],
+    "similarity": [
+        "hops_common_neighbors",
+        "hops_common_neighbors"
+    ],
+    "matching": [
+        "mlpb",
+        "mlpb"
+    ],
+    "upper_bound": [
+        1.0,
+        1.0
+    ],
+    "gmv": [
+        82,
+        10
+    ],
+    "max_hops": 2,
+    "layers_to_coarse": [
+        0
+    ],
+    "itr": [
+        1000,
+        1000
+    ],
+    "level": [
+        1,
+        0
+    ]
+}

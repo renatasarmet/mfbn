@@ -187,8 +187,8 @@ if __name__ == "__main__":
         # ('tripartite-1', 'tripartite-1-1', 20),
         # ('tripartite-2', 'tripartite-2-2', 200),
         # ('tripartite-2', 'tripartite-2-3', 200),
-        ('tripartite-2', 'tripartite-2-bi-1-2', 200),
-        ('tripartite-2', 'tripartite-2-bi-2-2', 200)
+        ('tripartite-2', 'tripartite-2-bi-1-1', 200),
+        # ('tripartite-2', 'tripartite-2-bi-2-1', 200)
         # ('tripartite-3', 'tripartite-3-2', 200)
     ]
 
