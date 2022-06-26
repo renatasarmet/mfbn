@@ -78,11 +78,12 @@ def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename,
     sum_recall = 0
     count_communities = 0
     for current_community, current_last_index in dict_last_index_communities.items():
+        print("current_community = ", current_community)
         # Separating lists
         current_list = list_file_mfbn[last_last_index+1:current_last_index+1]
-        # print("current_list=", current_list)
+        print("current_list=", current_list)
         mode_current_list = multimode(current_list)[0]
-        # print("mode_current_list=", mode_current_list)
+        print("mode_current_list=", mode_current_list)
 
         # Getting counts
         n_total = len(current_list)  # true positive + false positive
@@ -192,9 +193,10 @@ if __name__ == "__main__":
         # ('tripartite-3', 'tripartite-3', 'tripartite-3-2', 200)
         # ('4partite-1', '4partite-1', '4partite-1-1', 200)
         # ('4partite-2', '4partite-2', '4partite-2-3', 200)
-        ('4partite-3', '4partite-3', '4partite-3-2', 100),
-        ('4partite-3', '4partite-3', '4partite-3-5', 100),
-        ('4partite-3', '4partite-3', '4partite-3-7', 100)
+        # ('4partite-3', '4partite-3', '4partite-3-2', 100),
+        # ('4partite-3', '4partite-3', '4partite-3-5', 100),
+        # ('4partite-3', '4partite-3', '4partite-3-7', 100)
+        ('g_bipartite-1', 'g_bipartite-1', 'g_bipartite-1-1', 8807)
     ]
 
     for files in list_tuple_files:
@@ -205,27 +207,27 @@ if __name__ == "__main__":
             last_index_layer_0=files[3],
             remove_vertex_degree_0=False)
 
-        print("remove_vertex_degree_0=True")
-        calculate_clustering_precision_and_recall(
-            bnoc_filename=files[0],
-            mfbn_filename=files[2],
-            last_index_layer_0=files[3],
-            remove_vertex_degree_0=True)
+        # print("remove_vertex_degree_0=True")
+        # calculate_clustering_precision_and_recall(
+        #     bnoc_filename=files[0],
+        #     mfbn_filename=files[2],
+        #     last_index_layer_0=files[3],
+        #     remove_vertex_degree_0=True)
 
-        print("Original:")
-        calculate_clustering_modularity(
-            ncol_folder=files[0],
-            ncol_filename=files[1],
-            membership_filepath='output_bnoc/',
-            membership_filename=files[0],
-            last_index_layer_0=files[3])
+        # print("Original:")
+        # calculate_clustering_modularity(
+        #     ncol_folder=files[0],
+        #     ncol_filename=files[1],
+        #     membership_filepath='output_bnoc/',
+        #     membership_filename=files[0],
+        #     last_index_layer_0=files[3])
 
-        print("Detected:")
-        calculate_clustering_modularity(
-            ncol_folder=files[0],
-            ncol_filename=files[1],
-            membership_filepath='output_mfbn/',
-            membership_filename=files[2],
-            last_index_layer_0=files[3])
+        # print("Detected:")
+        # calculate_clustering_modularity(
+        #     ncol_folder=files[0],
+        #     ncol_filename=files[1],
+        #     membership_filepath='output_mfbn/',
+        #     membership_filename=files[2],
+        #     last_index_layer_0=files[3])
 
         print("--------")

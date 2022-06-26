@@ -1,0 +1,55 @@
+{
+    "source_input": "outputs/output_bnoc/g_bipartite-1/g_bipartite-1.ncol",
+    "source_vertices": [
+        8807,
+        2
+    ],
+    "source_vcount": 8809,
+    "source_ecount": 8807,
+    "coarsened_ecount": 2,
+    "coarsened_vcount": 4,
+    "coarsened_vertices": [
+        2,
+        2
+    ],
+    "achieved_levels": [
+        1,
+        0
+    ],
+    "reduction_factor": [
+        1.0,
+        1.0
+    ],
+    "max_levels": [
+        1000,
+        1
+    ],
+    "similarity": [
+        "hops_common_neighbors",
+        "hops_common_neighbors"
+    ],
+    "matching": [
+        "mlpb",
+        "mlpb"
+    ],
+    "upper_bound": [
+        1.0,
+        1.0
+    ],
+    "gmv": [
+        2,
+        2
+    ],
+    "max_hops": 2,
+    "layers_to_coarse": [
+        0
+    ],
+    "itr": [
+        1000,
+        1000
+    ],
+    "level": [
+        1,
+        0
+    ]
+}
