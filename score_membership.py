@@ -189,7 +189,12 @@ if __name__ == "__main__":
         # ('tripartite-2', 'tripartite-2', 'tripartite-2-3', 200),
         # ('tripartite-2', 'tripartite-2-bi-1', 'tripartite-2-bi-1-1', 200),
         # ('tripartite-2', 'tripartite-2-bi-2', 'tripartite-2-bi-2-1', 200)
-        ('tripartite-3', 'tripartite-3', 'tripartite-3-2', 200)
+        # ('tripartite-3', 'tripartite-3', 'tripartite-3-2', 200)
+        # ('4partite-1', '4partite-1', '4partite-1-1', 200)
+        # ('4partite-2', '4partite-2', '4partite-2-3', 200)
+        ('4partite-3', '4partite-3', '4partite-3-2', 100),
+        ('4partite-3', '4partite-3', '4partite-3-5', 100),
+        ('4partite-3', '4partite-3', '4partite-3-7', 100)
     ]
 
     for files in list_tuple_files:

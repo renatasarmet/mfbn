@@ -1,0 +1,77 @@
+{
+    "source_input": "outputs/output_bnoc/4partite-3/4partite-3.ncol",
+    "source_vertices": [
+        100,
+        100,
+        100,
+        100
+    ],
+    "source_vcount": 400,
+    "source_ecount": 430,
+    "coarsened_ecount": 361,
+    "coarsened_vcount": 322,
+    "coarsened_vertices": [
+        22,
+        100,
+        100,
+        100
+    ],
+    "achieved_levels": [
+        8,
+        0,
+        0,
+        0
+    ],
+    "reduction_factor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "max_levels": [
+        1000,
+        3,
+        3,
+        3
+    ],
+    "similarity": [
+        "hops_common_neighbors",
+        "hops_common_neighbors",
+        "hops_common_neighbors",
+        "hops_common_neighbors"
+    ],
+    "matching": [
+        "mlpb",
+        "mlpb",
+        "mlpb",
+        "mlpb"
+    ],
+    "upper_bound": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "gmv": [
+        14,
+        100,
+        100,
+        100
+    ],
+    "max_hops": 4,
+    "layers_to_coarse": [
+        0
+    ],
+    "itr": [
+        1000,
+        1000,
+        1000,
+        1000
+    ],
+    "level": [
+        7,
+        0,
+        0,
+        0
+    ]
+}
