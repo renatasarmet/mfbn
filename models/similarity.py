@@ -96,11 +96,28 @@ class Similarity(object):
         Calculates pairwise common neighbors similarity uses the edge-weight information
         on a given unweighted graph.
         """
+
         _sum = 0.0
         cn = self.adjlist[i].intersection(self.adjlist[j])
         for z in cn:
             _sum += (self.graph[i, z] + self.graph[j, z]) / 2
         return _sum
+
+    def hops_common_neighbors(self, graph, hop, i, j):
+        """ 
+        Calculates pairwise common neighbors similarity on a given unweighted graph, 
+        uses the entire k-hop path information. 
+        If it's a 2-hops, return the weighted_common_neighbors.
+        """
+
+        if hop == 2:
+            return self.weighted_common_neighbors(i, j)
+
+        path_hops_i = set(graph.neighborhood(
+            vertices=i, order=hop-1, mindist=1))
+        path_hops_j = set(graph.neighborhood(
+            vertices=j, order=hop-1, mindist=1))
+        return len(path_hops_i.intersection(path_hops_j))
 
     def jaccard(self, i, j):
         """ Calculates pairwise jaccard similarity on a given unweighted graph. """

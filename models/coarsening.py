@@ -50,7 +50,7 @@ class Coarsening:
         prop_defaults = {
             'reduction_factor': [0.5], 'max_levels': [3], 'matching': ['rgmb'],
             'similarity': ['common_neighbors'], 'itr': [10], 'upper_bound': [0.2], 'seed_priority': ['degree'],
-            'gmv': [None], 'tolerance': [0.01], 'reverse': None, 'projection': 'common_neighbors',
+            'gmv': [None], 'max_hops': 2, 'layers_to_coarse': [], 'tolerance': [0.01], 'reverse': None, 'projection': 'common_neighbors',
             'pgrd': [0.50], 'deltap': [0.35], 'deltav': [0.35], 'wmin': [0.0], 'wmax': [1.0], 'threads': 1
         }
 
@@ -63,13 +63,13 @@ class Coarsening:
 
         # Validation of list values
         for prop_name, prop_value in prop_defaults.items():
-            if prop_name != 'threads' and len(getattr(self, prop_name)) == 1:
+            if prop_name not in ['threads', 'max_hops', 'layers_to_coarse'] and len(getattr(self, prop_name)) == 1:
                 setattr(self, prop_name, [getattr(self, prop_name)[
                         0]] * self.source_graph['layers'])
 
         # Parameters dimension validation
         for prop_name, prop_value in prop_defaults.items():
-            if prop_name not in ['threads', 'projection']:
+            if prop_name not in ['threads', 'projection', 'max_hops', 'layers_to_coarse']:
                 if self.source_graph['layers'] != len(getattr(self, prop_name)):
                     print('Number of layers and ' +
                           str(prop_name) + ' do not match.')
@@ -81,6 +81,14 @@ class Coarsening:
                       mp.cpu_count()) + ').\n The number of '
                   'threads was setted as ' + str(mp.cpu_count()))
             self.threads = mp.cpu_count()
+            sys.exit(1)
+
+        if self.max_hops > self.source_graph['layers']:
+            print('Warning: Number of defined max_hops (' + str(self.max_hops) + ') '
+                  'cannot be greater than the number of layers (' + str(
+                      self.source_graph['layers']) + ').\n The number of '
+                  'max_hops was setted as ' + str(self.max_hops))
+            self.max_hops = self.source_graph['layers']
             sys.exit(1)
 
         # Matching method validation
@@ -114,7 +122,7 @@ class Coarsening:
 
         # Similarity measure validation
         valid_similarity = [
-            'common_neighbors', 'weighted_common_neighbors',
+            'common_neighbors', 'weighted_common_neighbors', 'hops_common_neighbors',
             'salton', 'preferential_attachment', 'jaccard', 'weighted_jaccard',
             'adamic_adar', 'resource_allocation', 'sorensen', 'hub_promoted',
             'hub_depressed', 'leicht_holme_newman', 'newman_collaboration', 'unweight'
@@ -147,23 +155,58 @@ class Coarsening:
                     text += str(layer) + ') does not accept -rf > 0.5.'
                     print(text)
 
+        # Debug edges
+        # How many edges in total?
+        print(f"Total number of edges: {self.source_graph.ecount()}")
+
+        for layer in range(self.source_graph['layers']):
+            vertices_id = self.source_graph['vertices_by_type'][layer]
+
+            # How many vertices with no edges?
+            degree0 = [
+                vertex for vertex in vertices_id if self.source_graph.degree(vertex) == 0]
+            print(
+                F"Layer {layer}: {len(degree0)} vertices with no edges {degree0}")
+            # Since the vertices that have no edges cannot be clustered,
+            # Add it to the corresponding GMV. (Respecting the limit of the number of vertices).
+            self.gmv[layer] = min(
+                self.gmv[layer]+len(degree0), self.source_graph['vertices'][layer])
+
+            min_l1 = vertices_id[0]
+            max_l1 = vertices_id[-1]
+
+            # How many edges per pair of layers?
+            for l2 in range(layer+1, self.source_graph['layers']):
+                vertices_id_l2 = self.source_graph['vertices_by_type'][l2]
+                min_l2 = vertices_id_l2[0]
+                max_l2 = vertices_id_l2[-1]
+                sum_edges = sum([sum(x[min_l2:max_l2+1])
+                                 for x in self.source_graph.get_adjacency()[min_l1:max_l1+1]])
+                print(f"Sum edges layers {layer} and {l2} = ", sum_edges)
+        print("--------------------------------------------------")
+
     def run(self):
 
         graph = self.source_graph.copy()
-        while True:
 
+        # Starting neighborhood with two hops
+        hop = 2
+        print(f"------------------------------ hop = {hop}")
+        while True:
             level = graph['level']
             contract = False
-
             args = []
-            layers = graph['layers']  # TODO
-            for layer in range(layers):
+            layers = self.layers_to_coarse if self.layers_to_coarse else range(
+                graph['layers'])
+            for layer in layers:
                 do_matching = True
                 if self.gmv[layer] is None and level[layer] >= self.max_levels[layer]:
-                    print("Layer = ", layer, ". Max levels reached.")
+                    print(
+                        "Layer = {layer}. Max levels reached with {level[layer]} levels.")
                     do_matching = False
                 elif self.gmv[layer] and graph['vertices'][layer] <= self.gmv[layer]:
-                    print("Layer = ", layer, ". Minimum vertices reached.")
+                    print(
+                        f"Layer = {layer}. Minimum vertices reached with {graph['vertices'][layer]} vertices.")
                     do_matching = False
 
                 if do_matching:
@@ -184,6 +227,7 @@ class Coarsening:
                         kwargs['n'] = self.source_graph['vertices'][layer]
                         kwargs['tolerance'] = self.tolerance[layer]
                         kwargs['itr'] = self.itr[layer]
+                        kwargs['hop'] = hop
 
                     if self.matching[layer] in ['hem', 'lem', 'rm', 'mnmf', 'msvm']:
                         graph['projection'] = getattr(Similarity(
@@ -225,9 +269,12 @@ class Coarsening:
                 coarsened_graph['level'] = level
 
                 if coarsened_graph.vcount() == graph.vcount():
-                    print("It didn't improve. Vcount = ",
-                          coarsened_graph.vcount())
-                    break
+                    print(
+                        f"It didn't improve. Vcount = {coarsened_graph.vcount()}. matching[vertices] = {matching[vertices]}\n")
+                    if hop >= self.max_hops:
+                        break
+                    hop += 1  # try with one more hop
+                    print(f"\n\n------------------------------ hop = {hop}\n")
 
                 self.hierarchy_graphs.append(coarsened_graph)
                 self.hierarchy_levels.append(level[:])
@@ -235,3 +282,4 @@ class Coarsening:
             else:
                 print("There is no available matching.")
                 break
+            print("\n")

@@ -369,3 +369,6 @@ http://www.gnu.org/licenses/.
 
 #### RUN ALGORITHM .. inside mfbn folder
 ```python mfbn.py -cnf input/tripartite-1.json```
+
+#### python-igraph API reference
+https://igraph.org/python/api/0.9.8/igraph._igraph.GraphBase.html
