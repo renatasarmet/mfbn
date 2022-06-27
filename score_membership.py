@@ -19,6 +19,7 @@ def read_ncol_file(filename, filetype, last_index_layer_0):
 def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename,
                                               last_index_layer_0, remove_vertex_degree_0=False):
     """
+    OBS: THIS METHOD JUST WORKS FOR BNOC GENERATED NETWORK
     * Metrics details
     Precision = true positive / (true positive + false positive)
     --> n_correct / n_total
@@ -196,16 +197,17 @@ if __name__ == "__main__":
         # ('4partite-3', '4partite-3', '4partite-3-2', 100),
         # ('4partite-3', '4partite-3', '4partite-3-5', 100),
         # ('4partite-3', '4partite-3', '4partite-3-7', 100)
-        ('g_bipartite-1', 'g_bipartite-1', 'g_bipartite-1-1', 8807)
+        # ('g_bipartite-1', 'g_bipartite-1', 'g_bipartite-1-1', 8807)
+        ('g_tripartite-1', 'g_tripartite-1', 'g_tripartite-1-3', 8807)
     ]
 
     for files in list_tuple_files:
-        print("remove_vertex_degree_0=False")
-        calculate_clustering_precision_and_recall(
-            bnoc_filename=files[0],
-            mfbn_filename=files[2],
-            last_index_layer_0=files[3],
-            remove_vertex_degree_0=False)
+        # print("remove_vertex_degree_0=False")
+        # calculate_clustering_precision_and_recall(
+        #     bnoc_filename=files[0],
+        #     mfbn_filename=files[2],
+        #     last_index_layer_0=files[3],
+        #     remove_vertex_degree_0=False)
 
         # print("remove_vertex_degree_0=True")
         # calculate_clustering_precision_and_recall(
@@ -222,12 +224,12 @@ if __name__ == "__main__":
         #     membership_filename=files[0],
         #     last_index_layer_0=files[3])
 
-        # print("Detected:")
-        # calculate_clustering_modularity(
-        #     ncol_folder=files[0],
-        #     ncol_filename=files[1],
-        #     membership_filepath='output_mfbn/',
-        #     membership_filename=files[2],
-        #     last_index_layer_0=files[3])
+        print("Detected:")
+        calculate_clustering_modularity(
+            ncol_folder=files[0],
+            ncol_filename=files[1],
+            membership_filepath='output_mfbn/',
+            membership_filename=files[2],
+            last_index_layer_0=files[3])
 
         print("--------")
