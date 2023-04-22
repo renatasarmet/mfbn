@@ -1,21 +1,21 @@
 {
     "source_input": "outputs/output_bnoc/g_tripartite-1/g_tripartite-1.ncol",
     "source_vertices": [
-        8807,
-        4355,
-        42
+        6131,
+        9,
+        20
     ],
-    "source_vcount": 13204,
+    "source_vcount": 6160,
     "source_ecount": 19321,
-    "coarsened_ecount": 4375,
-    "coarsened_vcount": 7074,
+    "coarsened_ecount": 158,
+    "coarsened_vcount": 39,
     "coarsened_vertices": [
-        2677,
-        4355,
-        42
+        10,
+        9,
+        20
     ],
     "achieved_levels": [
-        4,
+        1,
         0,
         0
     ],
@@ -45,9 +45,9 @@
         1.0
     ],
     "gmv": [
-        1,
-        2658,
-        42
+        10,
+        9,
+        20
     ],
     "max_hops": 3,
     "layers_to_coarse": [

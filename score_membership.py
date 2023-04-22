@@ -114,12 +114,18 @@ def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename,
     print(f"Average recall {avg_recall*100:.3f}% \n")
 
 
-def calculate_clustering_modularity(ncol_folder, ncol_filename, membership_filepath, membership_filename, last_index_layer_0):
+def calculate_clustering_modularity(ncol_folder, ncol_filename, membership_filepath,
+                                    membership_filename, last_index_layer_0, add_randomness=True):
     """
     https://arxiv.org/pdf/cond-mat/0408187.pdf
     Modularity is a property of a network and a specific proposed division of that network 
     into communities. It measures when the division is a good one, in the sense that there 
     are many edges within communities and only a few between them. 
+    With add_randomness=True, if the fraction of within-community edges is no different from 
+    what we would expect for the randomized network, then this quantity will be zero. Nonzero 
+    values represent deviations from randomness, and in practice it is found that a value above 
+    about 0.3 is a good indicator of significant community structure in a network. Values above 
+    0.7 are rare.
     """
     print(
         f"CALCULATING METRICS, filename: {membership_filepath}{membership_filename}")
@@ -173,7 +179,7 @@ def calculate_clustering_modularity(ncol_folder, ncol_filename, membership_filep
         for j in range(last_index_layer_0):
             if i != j:
                 expected = (deg.get(i, 0) * deg.get(j, 0)) / \
-                    (2*m)  # from 0 to 1
+                    (2*m) if add_randomness else 0  # from 0 to 1
                 diff = A[i][j] - expected
                 same_community = int(list_file_mfbn[i] == list_file_mfbn[j])
                 modularity += diff * same_community
@@ -196,9 +202,17 @@ if __name__ == "__main__":
         # ('4partite-2', '4partite-2', '4partite-2-3', 200)
         # ('4partite-3', '4partite-3', '4partite-3-2', 100),
         # ('4partite-3', '4partite-3', '4partite-3-5', 100),
-        # ('4partite-3', '4partite-3', '4partite-3-7', 100)
-        # ('g_bipartite-1', 'g_bipartite-1', 'g_bipartite-1-1', 8807)
-        ('g_tripartite-1', 'g_tripartite-1', 'g_tripartite-1-3', 8807)
+        # ('4partite-3', '4partite-3', '4partite-3-7', 100),
+        # ('g_bipartite-1', 'g_bipartite-1', 'g_bipartite-1-1', 8807),
+        # ('g_small_bipartite-1', 'g_small_bipartite-1', 'g_small_bipartite-1-1', 5),
+        # ('g_tripartite-1', 'g_tripartite-1', 'g_tripartite-1-1', 6131),
+        # ('g_small_tripartite-1', 'g_small_tripartite-1', 'g_small_tripartite-1-1', 10),
+        # ('g_small_4partite-1', 'g_small_4partite-1', 'g_small_4partite-1-1', 20),
+        # ('g_small_4partite_connected-1', 'g_small_4partite_connected-1',
+        #  'g_small_4partite_connected-1-1', 20),
+        ('g_4partite-1', 'g_4partite-1', 'g_4partite-1-1', 5522),
+        ('g_4partite_connected-1', 'g_4partite_connected-1',
+         'g_4partite_connected-1-1', 5522),
     ]
 
     for files in list_tuple_files:
@@ -224,12 +238,22 @@ if __name__ == "__main__":
         #     membership_filename=files[0],
         #     last_index_layer_0=files[3])
 
-        print("Detected:")
+        print("Detected with Randomness:")
         calculate_clustering_modularity(
             ncol_folder=files[0],
             ncol_filename=files[1],
             membership_filepath='output_mfbn/',
             membership_filename=files[2],
-            last_index_layer_0=files[3])
+            last_index_layer_0=files[3],
+            add_randomness=True)
+
+        print("Detected without Randomness:")
+        calculate_clustering_modularity(
+            ncol_folder=files[0],
+            ncol_filename=files[1],
+            membership_filepath='output_mfbn/',
+            membership_filename=files[2],
+            last_index_layer_0=files[3],
+            add_randomness=False)
 
         print("--------")

@@ -563,7 +563,7 @@ class MGraph(Graph):
 
         # print("vertices_score=", vertices_score)
         # print("dictionary=", dictionary)
-        print("vertices_id=", vertices_id)
+        # print("vertices_id=", vertices_id)
 
         tolerance *= len(vertices)
         print("tolerance now =", tolerance)
