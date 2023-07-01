@@ -1,4 +1,5 @@
 from statistics import multimode  # python8
+from sklearn.metrics.cluster import normalized_mutual_info_score
 
 
 def read_file(filename, filetype, last_index_layer_0):
@@ -19,7 +20,7 @@ def read_ncol_file(filename, filetype, last_index_layer_0):
 def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename,
                                               last_index_layer_0, remove_vertex_degree_0=False):
     """
-    OBS: THIS METHOD JUST WORKS FOR BNOC GENERATED NETWORK
+    PS: THIS METHOD JUST WORKS FOR BNOC GENERATED NETWORK
     * Metrics details
     Precision = true positive / (true positive + false positive)
     --> n_correct / n_total
@@ -188,11 +189,55 @@ def calculate_clustering_modularity(ncol_folder, ncol_filename, membership_filep
     print(f"Modularity {modularity:.3f} \n")
 
 
+def calculate_nmi(bnoc_filename, mfbn_filename,
+                  last_index_layer_0, remove_vertex_degree_0=False):
+    """
+    PS: THIS METHOD JUST WORKS FOR BNOC GENERATED NETWORK
+    """
+    print(f"CALCULATING METRICS, filename: {mfbn_filename}")
+
+    # Reading membership files
+    list_file_bnoc = read_file(filename=f'outputs/output_bnoc/{bnoc_filename}/{bnoc_filename}',
+                               filetype='membership',
+                               last_index_layer_0=last_index_layer_0)
+    list_file_mfbn = read_file(filename=f'outputs/output_mfbn/{bnoc_filename}/{mfbn_filename}',
+                               filetype='membership',
+                               last_index_layer_0=last_index_layer_0)
+
+    if remove_vertex_degree_0:
+        # Reading ncol file
+        list_file_ncol = read_ncol_file(filename=f'outputs/output_bnoc/{bnoc_filename}/{bnoc_filename}',
+                                        filetype='ncol',
+                                        last_index_layer_0=last_index_layer_0)
+
+        # Get vertices with no connections (degree=0)
+        # Start the set with all vertices in column 0
+        # When we find an edge from some vertex, we take it off the set
+        set_vertex_with_no_edges = set(range(last_index_layer_0))
+        for edge in list_file_ncol:
+            e = edge.split()
+            if len(e) > 0:
+                set_vertex_with_no_edges.discard(int(e[0]))
+                set_vertex_with_no_edges.discard(int(e[1]))
+
+        print(f"Removing {len(set_vertex_with_no_edges)} vertices with no connections (degree=0):",
+              set_vertex_with_no_edges)
+
+        # Cleaning list_file_bnoc and list_file_mfbn: removing set_vertex_with_no_edges
+        list_file_bnoc = [v for i, v in enumerate(
+            list_file_bnoc) if i not in set_vertex_with_no_edges]
+        list_file_mfbn = [v for i, v in enumerate(
+            list_file_mfbn) if i not in set_vertex_with_no_edges]
+
+    nmi = normalized_mutual_info_score(list_file_bnoc, list_file_mfbn)
+    print(f"NMI: {nmi:.3f}%")
+
+
 if __name__ == "__main__":
 
     # (folder, bnoc_filename, mfbn_filename, size layer 0)
     list_tuple_files = [
-        # ('tripartite-1', 'tripartite-1', 'tripartite-1-1', 20),
+        ('tripartite-1', 'tripartite-1', 'tripartite-1-1', 20),
         # ('tripartite-2', 'tripartite-2', 'tripartite-2-2', 200),
         # ('tripartite-2', 'tripartite-2', 'tripartite-2-3', 200),
         # ('tripartite-2', 'tripartite-2-bi-1', 'tripartite-2-bi-1-1', 200),
@@ -209,26 +254,47 @@ if __name__ == "__main__":
         # ('g_small_tripartite-1', 'g_small_tripartite-1', 'g_small_tripartite-1-1', 10),
         # ('g_small_4partite-1', 'g_small_4partite-1', 'g_small_4partite-1-1', 20),
         # ('g_small_4partite_connected-1', 'g_small_4partite_connected-1',
-        #  'g_small_4partite_connected-1-1', 20),
-        ('g_4partite-1', 'g_4partite-1', 'g_4partite-1-1', 5522),
-        ('g_4partite_connected-1', 'g_4partite_connected-1',
-         'g_4partite_connected-1-1', 5522),
+        #  'g_small_4partite_connected-1-1', 107),
+        # ('g_4partite-1', 'g_4partite-1', 'g_4partite-1-1', 5522),
+        # ('g_4partite_connected-1', 'g_4partite_connected-1',
+        #  'g_4partite_connected-1-1', 5522),
+        # ('g_small_4partite_connected-2', 'g_small_4partite_connected-2',
+        #  'g_small_4partite_connected-2-1', 69),
+        # ('g_small_3partite_connected-1', 'g_small_3partite_connected-1',
+        #  'g_small_3partite_connected-1-1', 39),
+        # ('real_small_4partite_connected-1', 'real_small_4partite_connected-1',
+        #  'real_small_4partite_connected-1-1', 17),
+
+
+
     ]
 
     for files in list_tuple_files:
-        # print("remove_vertex_degree_0=False")
-        # calculate_clustering_precision_and_recall(
-        #     bnoc_filename=files[0],
-        #     mfbn_filename=files[2],
-        #     last_index_layer_0=files[3],
-        #     remove_vertex_degree_0=False)
+        print("remove_vertex_degree_0=False")
+        calculate_clustering_precision_and_recall(
+            bnoc_filename=files[0],
+            mfbn_filename=files[2],
+            last_index_layer_0=files[3],
+            remove_vertex_degree_0=False)
 
-        # print("remove_vertex_degree_0=True")
-        # calculate_clustering_precision_and_recall(
-        #     bnoc_filename=files[0],
-        #     mfbn_filename=files[2],
-        #     last_index_layer_0=files[3],
-        #     remove_vertex_degree_0=True)
+        calculate_nmi(
+            bnoc_filename=files[0],
+            mfbn_filename=files[2],
+            last_index_layer_0=files[3],
+            remove_vertex_degree_0=False)
+
+        print("remove_vertex_degree_0=True")
+        calculate_clustering_precision_and_recall(
+            bnoc_filename=files[0],
+            mfbn_filename=files[2],
+            last_index_layer_0=files[3],
+            remove_vertex_degree_0=True)
+
+        calculate_nmi(
+            bnoc_filename=files[0],
+            mfbn_filename=files[2],
+            last_index_layer_0=files[3],
+            remove_vertex_degree_0=True)
 
         # print("Original:")
         # calculate_clustering_modularity(
@@ -238,22 +304,22 @@ if __name__ == "__main__":
         #     membership_filename=files[0],
         #     last_index_layer_0=files[3])
 
-        print("Detected with Randomness:")
-        calculate_clustering_modularity(
-            ncol_folder=files[0],
-            ncol_filename=files[1],
-            membership_filepath='output_mfbn/',
-            membership_filename=files[2],
-            last_index_layer_0=files[3],
-            add_randomness=True)
+        # print("Detected with Randomness:")
+        # calculate_clustering_modularity(
+        #     ncol_folder=files[0],
+        #     ncol_filename=files[1],
+        #     membership_filepath='output_mfbn/',
+        #     membership_filename=files[2],
+        #     last_index_layer_0=files[3],
+        #     add_randomness=True)
 
-        print("Detected without Randomness:")
-        calculate_clustering_modularity(
-            ncol_folder=files[0],
-            ncol_filename=files[1],
-            membership_filepath='output_mfbn/',
-            membership_filename=files[2],
-            last_index_layer_0=files[3],
-            add_randomness=False)
+        # print("Detected without Randomness:")
+        # calculate_clustering_modularity(
+        #     ncol_folder=files[0],
+        #     ncol_filename=files[1],
+        #     membership_filepath='output_mfbn/',
+        #     membership_filename=files[2],
+        #     last_index_layer_0=files[3],
+        #     add_randomness=False)
 
-        print("--------")
+        # print("--------")
