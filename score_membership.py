@@ -80,12 +80,12 @@ def calculate_clustering_precision_and_recall(bnoc_filename, mfbn_filename,
     sum_recall = 0
     count_communities = 0
     for current_community, current_last_index in dict_last_index_communities.items():
-        print("current_community = ", current_community)
+        # print("current_community = ", current_community)
         # Separating lists
         current_list = list_file_mfbn[last_last_index+1:current_last_index+1]
-        print("current_list=", current_list)
+        # print("current_list=", current_list)
         mode_current_list = multimode(current_list)[0]
-        print("mode_current_list=", mode_current_list)
+        # print("mode_current_list=", mode_current_list)
 
         # Getting counts
         n_total = len(current_list)  # true positive + false positive
@@ -230,14 +230,14 @@ def calculate_nmi(bnoc_filename, mfbn_filename,
             list_file_mfbn) if i not in set_vertex_with_no_edges]
 
     nmi = normalized_mutual_info_score(list_file_bnoc, list_file_mfbn)
-    print(f"NMI: {nmi:.3f}%")
+    print(f"NMI: {nmi:.3f}%\n")
 
 
 if __name__ == "__main__":
 
     # (folder, bnoc_filename, mfbn_filename, size layer 0)
     list_tuple_files = [
-        ('tripartite-1', 'tripartite-1', 'tripartite-1-1', 20),
+        # ('tripartite-1', 'tripartite-1', 'tripartite-1-1', 20),
         # ('tripartite-2', 'tripartite-2', 'tripartite-2-2', 200),
         # ('tripartite-2', 'tripartite-2', 'tripartite-2-3', 200),
         # ('tripartite-2', 'tripartite-2-bi-1', 'tripartite-2-bi-1-1', 200),
@@ -264,9 +264,7 @@ if __name__ == "__main__":
         #  'g_small_3partite_connected-1-1', 39),
         # ('real_small_4partite_connected-1', 'real_small_4partite_connected-1',
         #  'real_small_4partite_connected-1-1', 17),
-
-
-
+        ('q_tripartite-1', 'q_tripartite-1', 'q_tripartite-1-1', 20),
     ]
 
     for files in list_tuple_files:
