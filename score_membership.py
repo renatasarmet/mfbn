@@ -194,7 +194,7 @@ def calculate_nmi(bnoc_filename, mfbn_filename,
     """
     PS: THIS METHOD JUST WORKS FOR BNOC GENERATED NETWORK
     """
-    print(f"CALCULATING METRICS, filename: {mfbn_filename}")
+    print(f"CALCULATING NMI, filename: {mfbn_filename}")
 
     # Reading membership files
     list_file_bnoc = read_file(filename=f'outputs/output_bnoc/{bnoc_filename}/{bnoc_filename}',
@@ -230,7 +230,7 @@ def calculate_nmi(bnoc_filename, mfbn_filename,
             list_file_mfbn) if i not in set_vertex_with_no_edges]
 
     nmi = normalized_mutual_info_score(list_file_bnoc, list_file_mfbn)
-    print(f"NMI: {nmi:.3f}%\n")
+    print(f"NMI: {nmi:.3f}\n")
 
 
 if __name__ == "__main__":
@@ -264,16 +264,38 @@ if __name__ == "__main__":
         #  'g_small_3partite_connected-1-1', 39),
         # ('real_small_4partite_connected-1', 'real_small_4partite_connected-1',
         #  'real_small_4partite_connected-1-1', 17),
-        ('q_tripartite-1', 'q_tripartite-1', 'q_tripartite-1-1', 20),
+
+        # ----- quali ------
+
+        # Q Tripartite 1
+        # ('q_tripartite-1', 'q_tripartite-1', 'q_tripartite-1-1', 20),
+
+        # Q Tripartite 2
+        # ('q_tripartite-2', 'q_tripartite-2', 'q_tripartite-2-2', 200),
+        # ('q_tripartite-2', 'q_tripartite-2', 'q_tripartite-2-3', 200),
+        # ('q_tripartite-2', 'q_tripartite-2-bi-1', 'q_tripartite-2-bi-1-1', 200),
+        # ('q_tripartite-2', 'q_tripartite-2-bi-2', 'q_tripartite-2-bi-2-1', 200),
+
+        # Q 4partite 1
+        # ('q_4partite-1', 'q_4partite-1', 'q_4partite-1-1', 200),
+
+        # Q 4partite 2
+        # ('q_4partite-2', 'q_4partite-2', 'q_4partite-2-4', 200),
+
+        # Q 4partite 3
+        # ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-2', 100),
+        # ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-5', 100),
+        ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-7', 100),
+
     ]
 
     for files in list_tuple_files:
-        print("remove_vertex_degree_0=False")
-        calculate_clustering_precision_and_recall(
-            bnoc_filename=files[0],
-            mfbn_filename=files[2],
-            last_index_layer_0=files[3],
-            remove_vertex_degree_0=False)
+        print("--- remove_vertex_degree_0=False")
+        # calculate_clustering_precision_and_recall(
+        #     bnoc_filename=files[0],
+        #     mfbn_filename=files[2],
+        #     last_index_layer_0=files[3],
+        #     remove_vertex_degree_0=False)
 
         calculate_nmi(
             bnoc_filename=files[0],
@@ -281,12 +303,12 @@ if __name__ == "__main__":
             last_index_layer_0=files[3],
             remove_vertex_degree_0=False)
 
-        print("remove_vertex_degree_0=True")
-        calculate_clustering_precision_and_recall(
-            bnoc_filename=files[0],
-            mfbn_filename=files[2],
-            last_index_layer_0=files[3],
-            remove_vertex_degree_0=True)
+        print("--- remove_vertex_degree_0=True")
+        # calculate_clustering_precision_and_recall(
+        #     bnoc_filename=files[0],
+        #     mfbn_filename=files[2],
+        #     last_index_layer_0=files[3],
+        #     remove_vertex_degree_0=True)
 
         calculate_nmi(
             bnoc_filename=files[0],
@@ -294,7 +316,7 @@ if __name__ == "__main__":
             last_index_layer_0=files[3],
             remove_vertex_degree_0=True)
 
-        # print("Original:")
+        # print("--- Original:")
         # calculate_clustering_modularity(
         #     ncol_folder=files[0],
         #     ncol_filename=files[1],
@@ -302,14 +324,14 @@ if __name__ == "__main__":
         #     membership_filename=files[0],
         #     last_index_layer_0=files[3])
 
-        # print("Detected with Randomness:")
-        # calculate_clustering_modularity(
-        #     ncol_folder=files[0],
-        #     ncol_filename=files[1],
-        #     membership_filepath='output_mfbn/',
-        #     membership_filename=files[2],
-        #     last_index_layer_0=files[3],
-        #     add_randomness=True)
+        print("--- Detected with Randomness:")
+        calculate_clustering_modularity(
+            ncol_folder=files[0],
+            ncol_filename=files[1],
+            membership_filepath='output_mfbn/',
+            membership_filename=files[2],
+            last_index_layer_0=files[3],
+            add_randomness=True)
 
         # print("Detected without Randomness:")
         # calculate_clustering_modularity(
@@ -320,4 +342,4 @@ if __name__ == "__main__":
         #     last_index_layer_0=files[3],
         #     add_randomness=False)
 
-        # print("--------")
+        print("--------")

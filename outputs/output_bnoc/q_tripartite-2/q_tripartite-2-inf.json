@@ -1,5 +1,5 @@
 {
-    "output": "../mfbn/outputs/output_bnoc/q_tripartite-2/q_tripartite-2",
+    "output": "../mfbn/outputs/output_bnoc/tripartite-2/tripartite-2",
     "directory": null,
     "extension": "ncol",
     "vertices": [
@@ -77,7 +77,7 @@
     ],
     "unweighted": false,
     "normalize": true,
-    "conf": "input/q_tripartite-2.json",
+    "conf": "input/tripartite-2.json",
     "show_timing": false,
     "save_timing_csv": false,
     "save_timing_json": false,
