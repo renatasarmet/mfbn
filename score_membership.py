@@ -1,5 +1,5 @@
 from statistics import multimode  # python8
-from sklearn.metrics.cluster import normalized_mutual_info_score
+from sklearn.metrics.cluster import normalized_mutual_info_score, adjusted_mutual_info_score
 
 
 def read_file(filename, filetype, last_index_layer_0):
@@ -194,7 +194,7 @@ def calculate_nmi(bnoc_filename, mfbn_filename,
     """
     PS: THIS METHOD JUST WORKS FOR BNOC GENERATED NETWORK
     """
-    print(f"CALCULATING NMI, filename: {mfbn_filename}")
+    print(f"CALCULATING mutual information, filename: {mfbn_filename}")
 
     # Reading membership files
     list_file_bnoc = read_file(filename=f'outputs/output_bnoc/{bnoc_filename}/{bnoc_filename}',
@@ -230,7 +230,10 @@ def calculate_nmi(bnoc_filename, mfbn_filename,
             list_file_mfbn) if i not in set_vertex_with_no_edges]
 
     nmi = normalized_mutual_info_score(list_file_bnoc, list_file_mfbn)
-    print(f"NMI: {nmi:.3f}\n")
+    print(f"nmi: {nmi:.3f}")
+
+    ami = adjusted_mutual_info_score(list_file_bnoc, list_file_mfbn)
+    print(f"ami: {ami:.3f}\n")
 
 
 if __name__ == "__main__":
@@ -268,7 +271,7 @@ if __name__ == "__main__":
         # ----- quali ------
 
         # Q Tripartite 1
-        # ('q_tripartite-1', 'q_tripartite-1', 'q_tripartite-1-1', 20),
+        ('q_tripartite-1', 'q_tripartite-1', 'q_tripartite-1-1', 20),
 
         # Q Tripartite 2
         # ('q_tripartite-2', 'q_tripartite-2', 'q_tripartite-2-2', 200),
@@ -285,7 +288,7 @@ if __name__ == "__main__":
         # Q 4partite 3
         # ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-2', 100),
         # ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-5', 100),
-        ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-7', 100),
+        # ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-7', 100),
 
     ]
 
