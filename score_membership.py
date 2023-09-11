@@ -189,8 +189,8 @@ def calculate_clustering_modularity(ncol_folder, ncol_filename, membership_filep
     print(f"Modularity {modularity:.3f} \n")
 
 
-def calculate_nmi(bnoc_filename, mfbn_filename,
-                  last_index_layer_0, remove_vertex_degree_0=False):
+def calculate_mi(bnoc_filename, mfbn_filename,
+                 last_index_layer_0, remove_vertex_degree_0=False):
     """
     PS: THIS METHOD JUST WORKS FOR BNOC GENERATED NETWORK
     """
@@ -271,7 +271,7 @@ if __name__ == "__main__":
         # ----- quali ------
 
         # Q Tripartite 1
-        ('q_tripartite-1', 'q_tripartite-1', 'q_tripartite-1-1', 20),
+        # ('q_tripartite-1', 'q_tripartite-1', 'q_tripartite-1-1', 20),
 
         # Q Tripartite 2
         # ('q_tripartite-2', 'q_tripartite-2', 'q_tripartite-2-2', 200),
@@ -286,9 +286,9 @@ if __name__ == "__main__":
         # ('q_4partite-2', 'q_4partite-2', 'q_4partite-2-4', 200),
 
         # Q 4partite 3
-        # ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-2', 100),
-        # ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-5', 100),
-        # ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-7', 100),
+        ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-2', 100),
+        ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-5', 100),
+        ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-7', 100),
 
     ]
 
@@ -300,7 +300,7 @@ if __name__ == "__main__":
         #     last_index_layer_0=files[3],
         #     remove_vertex_degree_0=False)
 
-        calculate_nmi(
+        calculate_mi(
             bnoc_filename=files[0],
             mfbn_filename=files[2],
             last_index_layer_0=files[3],
@@ -313,7 +313,7 @@ if __name__ == "__main__":
         #     last_index_layer_0=files[3],
         #     remove_vertex_degree_0=True)
 
-        calculate_nmi(
+        calculate_mi(
             bnoc_filename=files[0],
             mfbn_filename=files[2],
             last_index_layer_0=files[3],
@@ -345,4 +345,4 @@ if __name__ == "__main__":
         #     last_index_layer_0=files[3],
         #     add_randomness=False)
 
-        print("--------")
+        print("------------------------------------------------")
