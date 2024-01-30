@@ -286,38 +286,43 @@ if __name__ == "__main__":
         # ('q_4partite-2', 'q_4partite-2', 'q_4partite-2-4', 200),
 
         # Q 4partite 3
-        ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-2', 100),
-        ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-5', 100),
-        ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-7', 100),
+        # ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-2', 100),
+        # ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-5', 100),
+        # ('q_4partite-3', 'q_4partite-3', 'q_4partite-3-7', 100),
+
+        # ----- 2024 -----
+
+        ('movie_lens_small_a_bipartite-1', 'movie_lens_small_a_bipartite-1',
+         'movie_lens_small_a_bipartite-1-1', 932),
 
     ]
 
     for files in list_tuple_files:
-        print("--- remove_vertex_degree_0=False")
-        # calculate_clustering_precision_and_recall(
+        # print("--- remove_vertex_degree_0=False")
+        # # calculate_clustering_precision_and_recall(
+        # #     bnoc_filename=files[0],
+        # #     mfbn_filename=files[2],
+        # #     last_index_layer_0=files[3],
+        # #     remove_vertex_degree_0=False)
+
+        # calculate_mi(
         #     bnoc_filename=files[0],
         #     mfbn_filename=files[2],
         #     last_index_layer_0=files[3],
         #     remove_vertex_degree_0=False)
 
-        calculate_mi(
-            bnoc_filename=files[0],
-            mfbn_filename=files[2],
-            last_index_layer_0=files[3],
-            remove_vertex_degree_0=False)
+        # print("--- remove_vertex_degree_0=True")
+        # # calculate_clustering_precision_and_recall(
+        # #     bnoc_filename=files[0],
+        # #     mfbn_filename=files[2],
+        # #     last_index_layer_0=files[3],
+        # #     remove_vertex_degree_0=True)
 
-        print("--- remove_vertex_degree_0=True")
-        # calculate_clustering_precision_and_recall(
+        # calculate_mi(
         #     bnoc_filename=files[0],
         #     mfbn_filename=files[2],
         #     last_index_layer_0=files[3],
         #     remove_vertex_degree_0=True)
-
-        calculate_mi(
-            bnoc_filename=files[0],
-            mfbn_filename=files[2],
-            last_index_layer_0=files[3],
-            remove_vertex_degree_0=True)
 
         # print("--- Original:")
         # calculate_clustering_modularity(

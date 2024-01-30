@@ -1,0 +1,55 @@
+{
+    "source_input": "outputs/output_bnoc/movie_lens_small_a_bipartite-1/movie_lens_small_a_bipartite-1.ncol",
+    "source_vertices": [
+        932,
+        645
+    ],
+    "source_vcount": 1577,
+    "source_ecount": 5235,
+    "coarsened_ecount": 1511,
+    "coarsened_vcount": 650,
+    "coarsened_vertices": [
+        5,
+        645
+    ],
+    "achieved_levels": [
+        1,
+        0
+    ],
+    "reduction_factor": [
+        1.0,
+        1.0
+    ],
+    "max_levels": [
+        1000,
+        1
+    ],
+    "similarity": [
+        "hops_common_neighbors",
+        "hops_common_neighbors"
+    ],
+    "matching": [
+        "mlpb",
+        "mlpb"
+    ],
+    "upper_bound": [
+        1.0,
+        1.0
+    ],
+    "gmv": [
+        5,
+        645
+    ],
+    "max_hops": 2,
+    "layers_to_coarse": [
+        0
+    ],
+    "itr": [
+        1000,
+        1000
+    ],
+    "level": [
+        1,
+        0
+    ]
+}
