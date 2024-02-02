@@ -292,8 +292,14 @@ if __name__ == "__main__":
 
         # ----- 2024 -----
 
-        ('movie_lens_small_a_bipartite-1', 'movie_lens_small_a_bipartite-1',
-         'movie_lens_small_a_bipartite-1-1', 932),
+        # ('movie_lens_small_a_bipartite-1', 'movie_lens_small_a_bipartite-1',
+        #  'movie_lens_small_a_bipartite-1-1', 932),
+
+        # ('movie_lens_small_a_tripartite-1', 'movie_lens_small_a_tripartite-1',
+        #  'movie_lens_small_a_tripartite-1-1', 932),
+
+        ('movie_lens_small_a_tripartite-2', 'movie_lens_small_a_tripartite-2',
+         'movie_lens_small_a_tripartite-2-1', 932),
 
     ]
 

@@ -1,55 +1,66 @@
 {
-    "source_input": "outputs/output_bnoc/movie_lens_small_a_bipartite-1/movie_lens_small_a_bipartite-1.ncol",
+    "source_input": "outputs/output_bnoc/movie_lens_small_a_tripartite-1/movie_lens_small_a_tripartite-1.ncol",
     "source_vertices": [
         932,
-        645
+        645,
+        18
     ],
-    "source_vcount": 1577,
-    "source_ecount": 5235,
-    "coarsened_ecount": 1912,
-    "coarsened_vcount": 650,
+    "source_vcount": 1595,
+    "source_ecount": 6514,
+    "coarsened_ecount": 3191,
+    "coarsened_vcount": 668,
     "coarsened_vertices": [
         5,
-        645
+        645,
+        18
     ],
     "achieved_levels": [
         1,
+        0,
         0
     ],
     "reduction_factor": [
+        0.5,
         0.5,
         0.5
     ],
     "max_levels": [
         1000,
+        1,
         1
     ],
     "similarity": [
+        "hops_common_neighbors",
         "hops_common_neighbors",
         "hops_common_neighbors"
     ],
     "matching": [
         "mlpb",
+        "mlpb",
         "mlpb"
     ],
     "upper_bound": [
+        0.2,
         0.2,
         0.2
     ],
     "gmv": [
         5,
-        645
+        645,
+        18
     ],
-    "max_hops": 2,
+    "max_hops": 3,
     "layers_to_coarse": [
         0
     ],
     "itr": [
         1000,
+        1000,
         1000
     ],
     "level": [
         1,
+        0,
         0
     ]
 }
