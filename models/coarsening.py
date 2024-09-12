@@ -167,10 +167,12 @@ class Coarsening:
                 vertex for vertex in vertices_id if self.source_graph.degree(vertex) == 0]
             print(
                 F"Layer {layer}: {len(degree0)} vertices with no edges {degree0}")
-            # Since the vertices that have no edges cannot be clustered,
-            # Add it to the corresponding GMV. (Respecting the limit of the number of vertices).
-            self.gmv[layer] = min(
-                self.gmv[layer]+len(degree0), self.source_graph['vertices'][layer])
+
+            if self.gmv[layer] is not None:
+                # Since the vertices that have no edges cannot be clustered,
+                # Add it to the corresponding GMV. (Respecting the limit of the number of vertices).
+                self.gmv[layer] = min(
+                    self.gmv[layer]+len(degree0), self.source_graph['vertices'][layer])
 
             min_l1 = vertices_id[0]
             max_l1 = vertices_id[-1]
